@@ -1,3 +1,9 @@
+<h1>Notes</h1>
+docker-compose \
+  -f quickstart.yml \
+  -f quickstart-oathkeeper.yml \
+  up --build --force-recreate
+
 <h1 align="center"><img src="https://raw.githubusercontent.com/ory/meta/master/static/banners/kratos.svg" alt="Ory Kratos - Cloud native Identity and User Management"></h1>
 
 <h4 align="center">
