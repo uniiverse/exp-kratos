@@ -1,19 +1,20 @@
 version: '3.7'
 
+# TOUR: Kratos accepts base URL customizations, which help oathkeeper rule matching.
 services:
   kratos:
     environment:
-      - SERVE_PUBLIC_BASE_URL=http://127.0.0.1:4455/.ory/kratos/public/
+      - SERVE_PUBLIC_BASE_URL=http://uvrs.tech:4455/.ory/kratos/public/
 
   kratos-selfservice-ui-node:
     environment:
       - PORT=4435
-      - KRATOS_BROWSER_URL=http://127.0.0.1:4455/.ory/kratos/public
+      - KRATOS_BROWSER_URL=http://uvrs.tech:4455/.ory/kratos/public
       - JWKS_URL=http://oathkeeper:4456/.well-known/jwks.json
       - SECURITY_MODE=jwks
 
   oathkeeper:
-    image: oryd/oathkeeper:v0.40
+    image: oryd/oathkeeper:v0.40.1
     depends_on:
       - kratos
     ports:
@@ -28,3 +29,11 @@ services:
       - intranet
     volumes:
       - ./contrib/quickstart/oathkeeper:/etc/config/oathkeeper
+
+  reports-service:
+    build:
+      context: "reports-service"
+    ports:
+      - 9001:9001
+    networks:
+      - intranet

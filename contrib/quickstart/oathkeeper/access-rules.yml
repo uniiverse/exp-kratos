@@ -1,34 +1,189 @@
--
-  id: "ory:kratos:public"
-  upstream:
-    preserve_host: true
-    url: "http://kratos:4433"
-    strip_path: /.ory/kratos/public
-  match:
-    url: "http://127.0.0.1:4455/.ory/kratos/public/<**>"
-    methods:
-      - GET
-      - POST
-      - PUT
-      - DELETE
-      - PATCH
-  authenticators:
-    -
-      handler: noop
-  authorizer:
-    handler: allow
-  mutators:
-    - handler: noop
+# -
+#   id: "ory:kratos:public"
+#   upstream:
+#     preserve_host: true
+#     url: "http://kratos:4433"
+#     strip_path: /.ory/kratos/public
+#   match:
+#     url: "http://uvrs.tech:4455/.ory/kratos/public/<**>"
+#     methods:
+#       - GET
+#       - POST
+#       - PUT
+#       - DELETE
+#       - PATCH
+#   authenticators:
+#     -
+#       handler: noop
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     - handler: noop
 
+# -
+#   id: "ory:kratos-selfservice-ui-node:anonymous"
+#   upstream:
+#     preserve_host: true
+#     url: "http://kratos-selfservice-ui-node:4435"
+#   match:
+#     url: "http://uvrs.tech:4455/<{registration,welcome,recovery,verification,login,error,**.css,**.js,**.png,}>"
+#     methods:
+#       - GET
+#   authenticators:
+#     -
+#       handler: anonymous
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     -
+#       handler: noop
+
+# -
+#   id: "ory:kratos-selfservice-ui-node:protected"
+#   upstream:
+#     preserve_host: true
+#     url: "http://kratos-selfservice-ui-node:4435"
+#   match:
+#     url: "http://uvrs.tech:4455/<{debug,dashboard,settings}>"
+#     methods:
+#       - GET
+#   authenticators:
+#     -
+#       handler: cookie_session
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     - handler: id_token
+#   errors:
+#     - handler: redirect
+#       config:
+#         to: http://uvrs.tech:4455/login
+
+# # GRPC Service (API)
+# - 
+#   id: "grpc_service1:anonymous"
+#   match:
+#     root: "uvrs.tech"
+#     full_method: "com.<**>"
+
+# - 
+#   id: "grpc_service1:protected"
+#   match:
+#     root: "uvrs.tech"
+#     full_method: "com.<**>"
+
+# -
+#   id: "grpc:protected"
+#   upstream:
+#     preserve_host: true
+#     # url: "http://localhost:9000"
+#     url: "http://host.docker.internal:9000"
+#   match:
+#     authority: uvrs.tech:9000
+#     full_method: services.reports.v1.ReportsService/CreateGuestToken
+#   methods:
+#     - GET
+#     - POST
+#     # url: "http://uvrs.tech:4455/<**>"
+#     # methods:
+#     #   - GET
+#     #   - POST
+#     # my.grpc.package/MyService/MyMethod
+#   # match:
+#   #   url: "grpc://uvrs.tech:4000"
+#   #   methods:
+#   #     - GET
+#   authenticators:
+#     -
+#       handler: anonymous
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     -
+#       handler: noop
+
+# -
+#   id: "auth-frontend:anonymous"
+#   upstream:
+#     preserve_host: true
+#     url: "http://host.docker.internal:3004"
+#   match:
+#     url: "<http|https>://uvrs.tech:4455/<{registration,welcome,recovery,verification,login,error,**.css,**.js,**.ts,**.tsx,**.mjs,@id/**,@vite/client,@react-refresh,**.png,}>"
+#     methods:
+#       - GET
+#   authenticators:
+#     -
+#       handler: anonymous
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     -
+#       handler: noop
+
+# -
+#   id: "auth-frontend:protected"
+#   upstream:
+#     preserve_host: true
+#     url: "http://host.docker.internal:3004"
+#   match:
+#     url: "http://uvrs.tech:4455/<{debug,dashboard,settings}>"
+#     methods:
+#       - GET
+#   authenticators:
+#     -
+#       handler: cookie_session
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     - handler: id_token
+#   errors:
+#     - handler: redirect
+#       config:
+#         to: http://uvrs.tech:4455/login
+
+# # TOUR: Backend service rule.
+# -
+#   id: "web:public"
+#   upstream:
+#     preserve_host: true
+#     url: "http://host.docker.internal:8080"
+#   match:
+#     url: "http://uvrs.tech:4455/api/<**>"
+#     methods:
+#       - GET
+#       - POST
+#       - PUT
+#       - DELETE
+#       - PATCH
+#   authenticators:
+#     -
+#       handler: anonymous
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     -
+#       handler: noop
+
+# TOUR: Backend service rule.
 -
-  id: "ory:kratos-selfservice-ui-node:anonymous"
+  id: "web:public"
   upstream:
-    preserve_host: true
-    url: "http://kratos-selfservice-ui-node:4435"
+    # preserve_host: true
+    url: "https://httpbin.org/anything/header"
+  # match:
+  #   url: "**"
+    # methods:
+    #   - POST
+    #   - HEAD
+    #   - GET
+    #   - PUT
+    #   - PATCH
+    #   - DELETE
+    #   - CONNECT
+    #   - TRACE
   match:
-    url: "http://127.0.0.1:4455/<{registration,welcome,recovery,verification,login,error,health/{alive,ready},**.css,**.js,**.png,}>"
-    methods:
-      - GET
+    authority: uvrs.tech:4455
+    full_method: services.reports.v1.ReportsService/CreateGuestToken
   authenticators:
     -
       handler: anonymous
@@ -38,23 +193,67 @@
     -
       handler: noop
 
--
-  id: "ory:kratos-selfservice-ui-node:protected"
-  upstream:
-    preserve_host: true
-    url: "http://kratos-selfservice-ui-node:4435"
-  match:
-    url: "http://127.0.0.1:4455/<{sessions,settings}>"
-    methods:
-      - GET
-  authenticators:
-    -
-      handler: cookie_session
-  authorizer:
-    handler: allow
-  mutators:
-    - handler: id_token
-  errors:
-    - handler: redirect
-      config:
-        to: http://127.0.0.1:4455/login
+# -
+#   id: "web:protected"
+#   upstream:
+#     preserve_host: true
+#     url: "http://host.docker.internal:8080"
+#   match:
+#     url: "http://uvrs.tech:4455/api/<**>"
+#     methods:
+#       - GET
+#       - POST
+#       - PUT
+#       - DELETE
+#       - PATCH
+#   authenticators:
+#     -
+#       handler: cookie_session
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     - handler: header
+#       config:
+#         headers:
+#           X-User-First-Name: "{{ print .Extra.first_name }}"
+#           X-User-Last-Name: "{{ print .Extra.last_name }}"
+#           X-User-ID: "{{ print .Extra.universe_id }}"
+#           X-User-Email: "{{ print .Extra.email }}"
+#   errors:
+#     - handler: redirect
+#       config:
+#         to: http://uvrs.tech:4455/login
+
+# TOUR: Ideal backend service rule?
+# Subdomains and allow subdomain CORS sharing: https://www.ory.sh/docs/kratos/guides/setting-up-cors
+# -
+#   id: "web:protected"
+#   upstream:
+#     preserve_host: true
+#     url: "http://host.docker.internal:8080"
+#     strip_path: /.web/public
+#   match:
+#     url: "http://uvrs.tech:4455/.web/public/<**>"
+#     methods:
+#       - GET
+#       - POST
+#       - PUT
+#       - DELETE
+#       - PATCH
+#   authenticators:
+#     -
+#       handler: cookie_session
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     - handler: header
+#       config:
+#         headers:
+#           X-User-First-Name: "{{ print .Extra.first_name }}"
+#           X-User-Last-Name: "{{ print .Extra.last_name }}"
+#           X-User-ID: "{{ print .Extra.universe_id }}"
+#           X-User-Email: "{{ print .Extra.email }}"
+#   errors:
+#     - handler: redirect
+#       config:
+#         to: http://uvrs.tech:4455/login

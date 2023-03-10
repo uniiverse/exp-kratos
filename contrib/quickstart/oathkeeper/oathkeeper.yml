@@ -1,24 +1,38 @@
 log:
   level: debug
-  format: json
+  format: text
 
 serve:
   proxy:
     cors:
-      enabled: true
-      allowed_origins:
-        - "*"
-      allowed_methods:
-        - POST
-        - GET
-        - PUT
-        - PATCH
-        - DELETE
+      enabled: false
+      # allowed_origins:
+      #   - "*"
+      # allowed_methods:
+      #   - POST
+      #   - HEAD
+      #   - GET
+      #   - PUT
+      #   - PATCH
+      #   - DELETE
+      #   - CONNECT
+      #   - TRACE
       allowed_headers:
+        # - "*"
         - Authorization
         - Content-Type
+        - grpc-encoding
+        - grpc-timeout
+        - :authority
+        - :method
+        - :scheme
+        - :path
+        - te
       exposed_headers:
+        # - "*"
         - Content-Type
+        # - grpc-message
+        # - grpc-status
       allow_credentials: true
       debug: true
 
@@ -30,7 +44,7 @@ errors:
     redirect:
       enabled: true
       config:
-        to: http://127.0.0.1:4455/login
+        to: http://uvrs.tech:4455/login
         when:
           -
             error:
@@ -49,6 +63,7 @@ access_rules:
   matching_strategy: glob
   repositories:
     - file:///etc/config/oathkeeper/access-rules.yml
+    # - file:///etc/config/oathkeeper/access-rules.json
 
 authenticators:
   anonymous:
@@ -59,10 +74,12 @@ authenticators:
   cookie_session:
     enabled: true
     config:
+      # TOUR: This is what we want, but we'll likely need to point this to a web endpoint.
       check_session_url: http://kratos:4433/sessions/whoami
       preserve_path: true
-      extra_from: "@this"
+      # extra_from: "@this"
       subject_from: "identity.id"
+      extra_from: "identity.traits"
       only:
         - ory_kratos_session
 
@@ -77,10 +94,17 @@ mutators:
   noop:
     enabled: true
 
+  # TOUR: Global configuration of header mutator. This would apply to any rule with mutator: header.
+  header:
+    enabled: true
+    config:
+      headers:
+        X-User-ID: "{{ print .Extra.universe_id }}"
+
   id_token:
     enabled: true
     config:
-      issuer_url: http://127.0.0.1:4455/
+      issuer_url: http://uvrs.tech:4455/
       jwks_url: file:///etc/config/oathkeeper/id_token.jwks.json
       claims: |
         {
