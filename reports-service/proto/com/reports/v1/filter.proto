@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package com.reports.v1;
+
+message Filter {
+  string user_id = 1;
+  string event_ids = 2;
+  string min_date_of_order = 3;
+  string max_date_of_order = 4;
+  string min_date_of_attendance = 5;
+  string max_date_of_attendance = 6;
+  string currency = 7;
+}

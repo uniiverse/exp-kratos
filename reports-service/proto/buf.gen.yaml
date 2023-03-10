@@ -1,0 +1,16 @@
+version: v1
+managed:
+  enabled: true
+plugins:
+  - plugin: buf.build/protocolbuffers/js
+    out: ../src/proto
+  - name: grpc
+    out: ../src/proto
+    opt: grpc_js,descriptor_set_out=../src/proto/descriptor_set.bin,include_imports
+    path: grpc_tools_node_protoc_plugin
+  - name: ts
+    out: ../src/proto
+    # opt: generate_package_definition
+    strategy: all
+    path: ../node_modules/ts-proto/protoc-gen-ts_proto
+    opt: outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false,esModuleInterop=true,forceLong=bigint

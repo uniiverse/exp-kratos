@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "com/reports/v1/filter.proto";
+
+package services.reports.v1;
+
+service ReportsService {
+  rpc CreateGuestToken(CreateGuestTokenRequest) returns (CreateGuestTokenResponse) {}
+}
+
+message CreateGuestTokenRequest {
+  string dashboard_id = 1;
+  com.reports.v1.Filter filter = 2;
+  string locale = 3;
+}
+
+message CreateGuestTokenResponse {
+  string token = 1;
+}
