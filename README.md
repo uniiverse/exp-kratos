@@ -4,6 +4,11 @@ docker-compose \
   -f quickstart-oathkeeper.yml \
   up --build --force-recreate
 
+Files of note:
+- quickstart-oathkeeper.yml
+- contrib/quickstart/oathkeeper/access-rules.yml
+- contrib/quickstart/oathkeeper/oathkeeper.yml
+
 <h1 align="center"><img src="https://raw.githubusercontent.com/ory/meta/master/static/banners/kratos.svg" alt="Ory Kratos - Cloud native Identity and User Management"></h1>
 
 <h4 align="center">

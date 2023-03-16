@@ -1,63 +1,63 @@
-# -
-#   id: "ory:kratos:public"
-#   upstream:
-#     preserve_host: true
-#     url: "http://kratos:4433"
-#     strip_path: /.ory/kratos/public
-#   match:
-#     url: "http://uvrs.tech:4455/.ory/kratos/public/<**>"
-#     methods:
-#       - GET
-#       - POST
-#       - PUT
-#       - DELETE
-#       - PATCH
-#   authenticators:
-#     -
-#       handler: noop
-#   authorizer:
-#     handler: allow
-#   mutators:
-#     - handler: noop
+-
+  id: "ory:kratos:public"
+  upstream:
+    preserve_host: true
+    url: "http://kratos:4433"
+    strip_path: /.ory/kratos/public
+  match:
+    url: "<{http,https}>://uvrs.tech:4455/.ory/kratos/public/<**>"
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+  authenticators:
+    -
+      handler: noop
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop
 
-# -
-#   id: "ory:kratos-selfservice-ui-node:anonymous"
-#   upstream:
-#     preserve_host: true
-#     url: "http://kratos-selfservice-ui-node:4435"
-#   match:
-#     url: "http://uvrs.tech:4455/<{registration,welcome,recovery,verification,login,error,**.css,**.js,**.png,}>"
-#     methods:
-#       - GET
-#   authenticators:
-#     -
-#       handler: anonymous
-#   authorizer:
-#     handler: allow
-#   mutators:
-#     -
-#       handler: noop
+-
+  id: "ory:kratos-selfservice-ui-node:anonymous"
+  upstream:
+    preserve_host: true
+    url: "http://kratos-selfservice-ui-node:4435"
+  match:
+    url: "<{http,https}>://uvrs.tech:4455/<{registration,welcome,recovery,verification,login,error,**.css,**.js,**.png,}>"
+    methods:
+      - GET
+  authenticators:
+    -
+      handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    -
+      handler: noop
 
-# -
-#   id: "ory:kratos-selfservice-ui-node:protected"
-#   upstream:
-#     preserve_host: true
-#     url: "http://kratos-selfservice-ui-node:4435"
-#   match:
-#     url: "http://uvrs.tech:4455/<{debug,dashboard,settings}>"
-#     methods:
-#       - GET
-#   authenticators:
-#     -
-#       handler: cookie_session
-#   authorizer:
-#     handler: allow
-#   mutators:
-#     - handler: id_token
-#   errors:
-#     - handler: redirect
-#       config:
-#         to: http://uvrs.tech:4455/login
+-
+  id: "ory:kratos-selfservice-ui-node:protected"
+  upstream:
+    preserve_host: true
+    url: "http://kratos-selfservice-ui-node:4435"
+  match:
+    url: "<{http,https}>://uvrs.tech:4455/<{debug,dashboard,settings}>"
+    methods:
+      - GET
+  authenticators:
+    -
+      handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+      config:
+        to: https://uvrs.tech:4455/login
 
 # # GRPC Service (API)
 # - 
@@ -126,7 +126,7 @@
 #     preserve_host: true
 #     url: "http://host.docker.internal:3004"
 #   match:
-#     url: "http://uvrs.tech:4455/<{debug,dashboard,settings}>"
+#     url: "<http|https>://uvrs.tech:4455/<{debug,dashboard,settings}>"
 #     methods:
 #       - GET
 #   authenticators:
@@ -141,20 +141,117 @@
 #       config:
 #         to: http://uvrs.tech:4455/login
 
-# # TOUR: Backend service rule.
 # -
-#   id: "web:public"
+#   id: "grpc:next"
 #   upstream:
-#     preserve_host: true
-#     url: "http://host.docker.internal:8080"
+
+# -
+#   id: "grpc:other"
+#   upstream:
+#     # url: "https://httpbin.org/anything/header"
+#     url: "http://reports-service:9001"
+#     # preserve_host: true
+#     # strip_path: /*
 #   match:
-#     url: "http://uvrs.tech:4455/api/<**>"
+#     url: "http://reports-service:9001"
 #     methods:
-#       - GET
 #       - POST
+#       - PRI
+#   authenticators:
+#     -
+#       handler: anonymous
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     -
+#       handler: noop
+
+# TOUR: PRI STUFF
+# -
+#   id: "grpc:connection"
+#   upstream:
+#     # url: "https://httpbin.org/anything/header"
+#     # url: "http://reports-service:9001"
+#     url: "http://service-go:50051"
+#     # url: "http://localhost:50051"
+#     strip_path: /*
+#   match:
+#     url: "<http|https>://<.*>"
+#     methods:
+#       - POST
+#       - PRI
+#   authenticators:
+#     -
+#       handler: anonymous
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     -
+#       handler: noop
+
+# -
+#   id: "grpc2:connection"
+#   upstream:
+#     # url: "https://httpbin.org/anything/header"
+#     url: "http://service-go:50051"
+#     # strip_path: /*
+#   match:
+#     url: "<http|https>://uvrs.tech:4455"
+#     methods:
+#       - POST
+#       - PRI
+#       - GET
 #       - PUT
-#       - DELETE
+#       - HEAD
 #       - PATCH
+#       - DELETE
+#       - CONNECT
+#       - TRACE
+#   authenticators:
+#     -
+#       handler: anonymous
+#   authorizer:
+#     handler: allow
+#   mutators:
+#     -
+#       handler: noop
+
+-
+  id: "grpc:other"
+  upstream:
+    url: "https://reports-service:9001"
+  match:
+    url: "<{http,https}>://uvrs.tech:4455/services.reports.v1.ReportsService/CreateGuestToken"
+    methods:
+      - POST
+  authenticators:
+    -
+      handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    -
+      handler: noop
+
+# -
+#   id: "grpc:public"
+#   upstream:
+#     url: "https://localhost:9001"
+#     # preserve_host: true
+#   # match:
+#   #   url: "http://localhost:4455/<**>"
+#   #   methods:
+#   #     - POST
+#   #     - HEAD
+#   #     - GET
+#   #     - PUT
+#   #     - PATCH
+#   #     - DELETE
+#   #     - CONNECT
+#   #     - TRACE
+#   match:
+#     authority: uvrs.tech:4455
+#     full_method: services.reports.v1.ReportsService/CreateGuestToken
 #   authenticators:
 #     -
 #       handler: anonymous
@@ -169,21 +266,15 @@
   id: "web:public"
   upstream:
     # preserve_host: true
-    url: "https://httpbin.org/anything/header"
-  # match:
-  #   url: "**"
-    # methods:
-    #   - POST
-    #   - HEAD
-    #   - GET
-    #   - PUT
-    #   - PATCH
-    #   - DELETE
-    #   - CONNECT
-    #   - TRACE
+    url: "http://host.docker.internal:3000"
   match:
-    authority: uvrs.tech:4455
-    full_method: services.reports.v1.ReportsService/CreateGuestToken
+    url: "<{http,https}>://uvrs.tech:4455/api/<**>"
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
   authenticators:
     -
       handler: anonymous
