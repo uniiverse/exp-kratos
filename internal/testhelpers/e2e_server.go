@@ -59,8 +59,8 @@ func startE2EServerOnly(t *testing.T, configFile string, isTLS bool, configOptio
 	publicPort, err = freeport.GetFreePort()
 	require.NoError(t, err)
 
-	publicUrl := fmt.Sprintf("http://127.0.0.1:%d", publicPort)
-	adminUrl := fmt.Sprintf("http://127.0.0.1:%d", adminPort)
+	publicUrl := fmt.Sprintf("http://uvrs.tech:%d", publicPort)
+	adminUrl := fmt.Sprintf("http://uvrs.tech:%d", adminPort)
 
 	if isTLS {
 		publicUrl = fmt.Sprintf("https://127.0.0.1:%d", publicPort)
@@ -140,8 +140,8 @@ func StartE2EServer(t *testing.T, configFile string, configOptions ConfigOptions
 }
 
 func CheckE2EServerOnHTTP(t *testing.T, publicPort, adminPort int) (publicUrl, adminUrl string) {
-	publicUrl = fmt.Sprintf("http://127.0.0.1:%d", publicPort)
-	adminUrl = fmt.Sprintf("http://127.0.0.1:%d", adminPort)
+	publicUrl = fmt.Sprintf("http://uvrs.tech:%d", publicPort)
+	adminUrl = fmt.Sprintf("http://uvrs.tech:%d", adminPort)
 	waitToComeAlive(t, publicUrl, adminUrl)
 	return
 }

@@ -96,7 +96,7 @@ func newHydra(t *testing.T, loginUI string, consentUI string) (hydraAdmin string
 		Tag:        "v2.0.0",
 		Env: []string{
 			"DSN=memory",
-			fmt.Sprintf("URLS_SELF_ISSUER=http://127.0.0.1:%d/", publicPort),
+			fmt.Sprintf("URLS_SELF_ISSUER=http://uvrs.tech:%d/", publicPort),
 			"URLS_LOGIN=" + loginUI,
 			"URLS_CONSENT=" + consentUI,
 			"LOG_LEAK_SENSITIVE_VALUES=true",
@@ -118,8 +118,8 @@ func newHydra(t *testing.T, loginUI string, consentUI string) (hydraAdmin string
 	require.NotEmpty(t, hydra.GetPort("4444/tcp"), "%+v", hydra.Container.NetworkSettings.Ports)
 	require.NotEmpty(t, hydra.GetPort("4445/tcp"), "%+v", hydra.Container)
 
-	hydraPublic = "http://127.0.0.1:" + hydra.GetPort("4444/tcp")
-	hydraAdmin = "http://127.0.0.1:" + hydra.GetPort("4445/tcp")
+	hydraPublic = "http://uvrs.tech:" + hydra.GetPort("4444/tcp")
+	hydraAdmin = "http://uvrs.tech:" + hydra.GetPort("4445/tcp")
 
 	go pool.Client.Logs(docker.LogsOptions{ErrorStream: TestLogWriter{T: t, streamName: "hydra-stderr"}, OutputStream: TestLogWriter{T: t, streamName: "hydra-stdout"}, Stdout: true, Stderr: true, Follow: true, Container: hydra.Container.ID})
 	hl := logrusx.New("hydra-ready-check", "hydra-ready-check")

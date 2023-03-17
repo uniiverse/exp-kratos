@@ -33,13 +33,13 @@ services:
       - ./contrib/quickstart/oathkeeper:/etc/config/oathkeeper
       - ./reports-service/certs:/etc/config/certs
 
-  reports-service:
-    build:
-      context: "reports-service"
-    ports:
-      - 9001:9001
-    networks:
-      - intranet
+  # reports-service:
+  #   build:
+  #     context: "reports-service"
+  #   ports:
+  #     - 9001:9001
+  #   networks:
+  #     - intranet
 
   # service-go:
   #   build:

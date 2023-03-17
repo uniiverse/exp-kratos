@@ -12,7 +12,7 @@ import (
 
 // If you use Open Source this would be:
 //
-// var client = pkg.NewSDKForSelfHosted("http://127.0.0.1:4433")
+// var client = pkg.NewSDKForSelfHosted("http://uvrs.tech:4433")
 var client = pkg.NewSDK("playground")
 
 func getIdentity() *ory.Identity {

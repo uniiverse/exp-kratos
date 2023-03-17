@@ -20,6 +20,7 @@ serve:
       allowed_headers:
         - Authorization
         - Content-Type
+        - User-Agent
         # - grpc-encoding
         # - grpc-timeout
         # - :authority
@@ -29,6 +30,7 @@ serve:
         # - te
       exposed_headers:
         - Content-Type
+        - User-Agent
       allow_credentials: true
       debug: true
     tls:
@@ -76,12 +78,13 @@ authenticators:
     enabled: true
     config:
       # TOUR: This is what we want, but we'll likely need to point this to a web endpoint.
-      check_session_url: http://kratos:4433/sessions/whoami
-      # check_session_url: http://host.docker.internal:8080/api/v2/current_user.json
+      # check_session_url: http://kratos:4433/sessions/whoami
+      check_session_url: http://host.docker.internal:8080/ory/whoami
       preserve_path: true
-      # extra_from: "@this"
-      subject_from: "identity.id"
-      extra_from: "identity.traits"
+      subject_from: "current_user.id"
+      extra_from: "current_user"
+      # subject_from: "identity.id"
+      # extra_from: "identity.traits"
       only:
         - ory_kratos_session
 
@@ -101,7 +104,8 @@ mutators:
     enabled: true
     config:
       headers:
-        X-User-ID: "{{ print .Extra.universe_id }}"
+        # X-User-ID: "{{ print .Extra.id }}"
+        X-User-ID: "Test"
 
   id_token:
     enabled: true

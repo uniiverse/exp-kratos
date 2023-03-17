@@ -3939,7 +3939,7 @@ Also, Ory Kratos SDKs are now published in individual
   ([bae1847](https://github.com/ory/kratos/commit/bae1847eba0d925f28a010876e35e3c2093bc8c6)):
 
   Since the quick-start describes how to run Kratos locally the actual location
-  of the redirect is `http://127.0.0.1:4433/self-service/login/browser`.
+  of the redirect is `http://uvrs.tech:4433/self-service/login/browser`.
 
 - Update docker.md - Outdated information
   ([#1627](https://github.com/ory/kratos/issues/1627))
@@ -4896,12 +4896,12 @@ _Login_
   "type": "browser",
   "expires_at": "2020-09-13T10:49:54.8295242Z",
   "issued_at": "2020-09-13T10:39:54.8295242Z",
-  "request_url": "http://127.0.0.1:4433/self-service/login/browser",
+  "request_url": "http://uvrs.tech:4433/self-service/login/browser",
   "methods": {
     "password": {
       "method": "password",
       "config": {
-        "action": "http://127.0.0.1:4433/self-service/login/methods/password?flow=ee6e1565-d3c3-4f3a-a6ff-0ba6b3a6481b",
+        "action": "http://uvrs.tech:4433/self-service/login/methods/password?flow=ee6e1565-d3c3-4f3a-a6ff-0ba6b3a6481b",
         "method": "POST",
         "fields": [
           {
@@ -4937,14 +4937,14 @@ _Registration_
   "type": "browser",
   "expires_at": "2020-09-13T10:53:15.1774019Z",
   "issued_at": "2020-09-13T10:43:15.1774019Z",
-  "request_url": "http://127.0.0.1:4433/self-service/registration/browser",
+  "request_url": "http://uvrs.tech:4433/self-service/registration/browser",
   "active": "password",
   "messages": null,
   "methods": {
     "password": {
       "method": "password",
       "config": {
-        "action": "http://127.0.0.1:4433/self-service/registration/methods/password?flow=2b1f8c5d-e830-4068-97b8-35f776df9217",
+        "action": "http://uvrs.tech:4433/self-service/registration/methods/password?flow=2b1f8c5d-e830-4068-97b8-35f776df9217",
         "method": "POST",
         "fields": [
           {
@@ -5003,9 +5003,9 @@ As you can see below, the input name `identifier` has changed to
   "type": "browser",
   "expires_at": "2021-04-28T08:37:53.924337873Z",
   "issued_at": "2021-04-28T08:27:53.924337873Z",
-  "request_url": "http://127.0.0.1:4433/self-service/login/browser",
+  "request_url": "http://uvrs.tech:4433/self-service/login/browser",
   "ui": {
-    "action": "http://127.0.0.1:4433/self-service/login?flow=07016811-917d-4788-bb9c-fc297897af6c",
+    "action": "http://uvrs.tech:4433/self-service/login?flow=07016811-917d-4788-bb9c-fc297897af6c",
     "method": "POST",
     "nodes": [
       {
@@ -5091,9 +5091,9 @@ _Registration_
   "type": "browser",
   "expires_at": "2021-04-28T08:54:12.951178972Z",
   "issued_at": "2021-04-28T08:44:12.951178972Z",
-  "request_url": "http://127.0.0.1:4433/self-service/registration/browser",
+  "request_url": "http://uvrs.tech:4433/self-service/registration/browser",
   "ui": {
-    "action": "http://127.0.0.1:4433/self-service/registration?flow=f0c0830a-f5b2-4c2d-a37f-2e70152a4f7c",
+    "action": "http://uvrs.tech:4433/self-service/registration?flow=f0c0830a-f5b2-4c2d-a37f-2e70152a4f7c",
     "method": "POST",
     "nodes": [
       {
@@ -7947,24 +7947,24 @@ The UI URLs have moved from `urls` to their respective self-service flows:
 
 ```diff
 -urls:
--  login_ui: http://127.0.0.1:4455/auth/login
--  registration_ui: http://127.0.0.1:4455/auth/registration
--  settings_ui: http://127.0.0.1:4455/settings
--  verify_ui: http://127.0.0.1:4455/verify
--  error_ui: http://127.0.0.1:4455/error
+-  login_ui: https://uvrs.tech:4455/auth/login
+-  registration_ui: https://uvrs.tech:4455/auth/registration
+-  settings_ui: https://uvrs.tech:4455/settings
+-  verify_ui: https://uvrs.tech:4455/verify
+-  error_ui: https://uvrs.tech:4455/error
 +selfservice:
 +  flows:
 +    login:
-+      ui_url: http://127.0.0.1:4455/auth/login
++      ui_url: https://uvrs.tech:4455/auth/login
 +    registration:
-+      ui_url: http://127.0.0.1:4455/auth/registration
++      ui_url: https://uvrs.tech:4455/auth/registration
 +    settings:
-+      ui_url: http://127.0.0.1:4455/settings
++      ui_url: https://uvrs.tech:4455/settings
 +    # please note that `verify` has changed to `verification`!
 +    verification:
-+      ui_url: http://127.0.0.1:4455/verify
++      ui_url: https://uvrs.tech:4455/verify
 +    error:
-+      ui_url: http://127.0.0.1:4455/error
++      ui_url: https://uvrs.tech:4455/error
 ```
 
 The default redirect URL as well as whitelisted redirect URLs have also changed
@@ -8001,7 +8001,7 @@ On top of this change, a few keys under `login` have changed as well:
  selfservice
    flows:
      login:
-+      ui_url: http://127.0.0.1:4455/auth/login
++      ui_url: https://uvrs.tech:4455/auth/login
        request_lifespan: 99m
 -      before:
 -        hooks:
@@ -8044,7 +8044,7 @@ On top of this change, a few keys under `registration` have changed as well:
  selfservice
    flows:
      registration:
-+      ui_url: http://127.0.0.1:4455/auth/registration
++      ui_url: https://uvrs.tech:4455/auth/registration
        request_lifespan: 99m
 -      before:
 -        hooks:
@@ -8097,7 +8097,7 @@ On top of this change, a few keys under `settings` have changed as well:
  selfservice
    flows:
      settings:
-+      ui_url: http://127.0.0.1:4455/settings
++      ui_url: https://uvrs.tech:4455/settings
        request_lifespan: 99m
        privileged_session_max_age: 99m
 -      default_return_to: https://self-service/settings/return_to
@@ -8134,7 +8134,7 @@ your Identity JSON Schema.
    flows:
      verification:
 +      enabled: true # defaults to true
-+      ui_url: http://127.0.0.1:4455/recovery
++      ui_url: https://uvrs.tech:4455/recovery
        request_lifespan: 1m
 -      default_return_to: https://self-service/verification/return_to
        after:

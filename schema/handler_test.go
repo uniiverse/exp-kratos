@@ -55,8 +55,8 @@ func TestHandler(t *testing.T) {
 		},
 		{
 			ID:     "unreachable",
-			URL:    urlx.ParseOrPanic("http://127.0.0.1:12345/unreachable-schema"),
-			RawURL: "http://127.0.0.1:12345/unreachable-schema",
+			URL:    urlx.ParseOrPanic("http://uvrs.tech:12345/unreachable-schema"),
+			RawURL: "http://uvrs.tech:12345/unreachable-schema",
 		},
 		{
 			ID:     "no-file",

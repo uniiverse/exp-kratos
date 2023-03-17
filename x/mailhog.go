@@ -80,7 +80,7 @@ func RunTestSMTP() (smtp, api string, err error) {
 	resourceMux.Unlock()
 
 	smtp = fmt.Sprintf("smtp://test:test@127.0.0.1:%d/?disable_starttls=true", smtpPort)
-	api = fmt.Sprintf("http://127.0.0.1:%d", apiPort)
+	api = fmt.Sprintf("http://uvrs.tech:%d", apiPort)
 	if err := backoff.Retry(func() error {
 		res, err := http.Get(api + "/api/v2/messages")
 		if err != nil {

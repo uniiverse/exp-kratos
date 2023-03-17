@@ -124,7 +124,7 @@ func TestDisallowedInternalNetwork(t *testing.T) {
 
 	conf, reg := internal.NewFastRegistryWithMocks(t)
 	conf.MustSet(ctx, config.ViperKeyCourierSMSRequestConfig, `{
-		"url": "http://127.0.0.1/",
+		"url": "http://uvrs.tech/",
 		"method": "GET",
 		"body": "file://./stub/request.config.twilio.jsonnet"
 	}`)

@@ -22,6 +22,8 @@ import loggingMiddleware from './logging';
 
 class ReportsService implements ReportsServiceImplementation {
   createGuestToken(request: CreateGuestTokenRequest, context: CallContext): Promise<CreateGuestTokenResponse> {
+    console.log("Headers: " + JSON.stringify(context.header));
+    console.log("Metadata: " + JSON.stringify(context.metadata));
     let resp = CreateGuestTokenResponse.create();
     resp.token = "test";
     return Promise.resolve(resp);

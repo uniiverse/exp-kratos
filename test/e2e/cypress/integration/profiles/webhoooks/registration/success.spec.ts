@@ -126,7 +126,7 @@ context("Registration success with email profile with webhooks", () => {
             hook: "web_hook",
             config: {
               url:
-                "http://127.0.0.1:4459/webhook/write?response=" +
+                "http://uvrs.tech:4459/webhook/write?response=" +
                 encodeURIComponent(JSON.stringify(updatedEmail)),
               method: "POST",
               body: "file://test/e2e/profiles/webhooks/webhook_body.jsonnet",

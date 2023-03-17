@@ -11,11 +11,11 @@ selfservice:
       enabled: true
       lifespan: 5s
       after:
-        default_browser_return_url: http://127.0.0.1:4455/
+        default_browser_return_url: https://uvrs.tech:4455/
 
     logout:
       after:
-        default_browser_return_url: http://127.0.0.1:4455/auth/login
+        default_browser_return_url: https://uvrs.tech:4455/auth/login
 
 identity:
   default_schema_id: default
